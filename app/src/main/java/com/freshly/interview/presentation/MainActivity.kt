@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.freshly.interview.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,6 +39,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 R.id.rb_fav -> viewModel.showAllEvents(false)
             }
         }
+        findViewById<SwipeRefreshLayout>(R.id.swipe_to_refresh).setOnRefreshListener {
+            viewModel.swipeToRefresh()
+        }
     }
 
     private fun bindViewModel() {
@@ -53,6 +57,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             it?.let {
                 // todo: use viewBinding instead of findViewById
                 findViewById<ProgressBar>(R.id.pb_progress).isVisible = it
+                findViewById<SwipeRefreshLayout>(R.id.swipe_to_refresh).isRefreshing = it
             }
         }
         viewModel.browserData.observe(this) { uri ->

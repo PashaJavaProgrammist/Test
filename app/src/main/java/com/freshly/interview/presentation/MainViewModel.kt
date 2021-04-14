@@ -39,7 +39,7 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             _progressData.value = true
-            updateEventsUseCase.execute(Unit)
+            updateEventsUseCase.execute(UpdateEventsUseCase.Input(false))
             when (val r = getEventsFlowLocallyUseCase.execute(Unit)) {
                 is Result.Success -> {
                     _progressData.value = false
@@ -80,6 +80,14 @@ class MainViewModel(
                     fav = fav,
                 )
             )
+        }
+    }
+
+    fun swipeToRefresh() {
+        viewModelScope.launch {
+            _progressData.value = true
+            updateEventsUseCase.execute(UpdateEventsUseCase.Input(true))
+            _progressData.value = false
         }
     }
 }

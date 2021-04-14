@@ -12,12 +12,12 @@ class UpdateEventsUseCase(
     private val requestEventsRemoteUseCase: RequestEventsRemoteUseCase,
     private val saveEventsLocallyUseCase: SaveEventsLocallyUseCase,
     private val updateTimeDao: UpdateTimeDao,
-) : UseCase<Unit, Unit> {
+) : UseCase<UpdateEventsUseCase.Input, Unit> {
 
-    override suspend fun execute(input: Unit): Result<Unit> = withContext(Dispatchers.IO) {
+    override suspend fun execute(input: Input): Result<Unit> = withContext(Dispatchers.IO) {
         val timeDbo = updateTimeDao.getById()
         val lastUpdateTime = timeDbo?.time ?: 0
-        if (System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL_MS) {
+        if (input.forceUpdate || System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL_MS) {
             when (val result = requestEventsRemoteUseCase.execute(Unit)) {
                 is Result.Success -> {
                     result.value?.events?.let { saveEventsLocallyUseCase.execute(it) }
@@ -28,4 +28,8 @@ class UpdateEventsUseCase(
         }
         return@withContext Result.Success(Unit)
     }
+
+    data class Input(
+        val forceUpdate: Boolean
+    )
 }
