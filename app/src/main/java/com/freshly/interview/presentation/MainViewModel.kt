@@ -8,7 +8,9 @@ import com.freshly.interview.common.Result
 import com.freshly.interview.domain.GetEventsFlowLocallyUseCase
 import com.freshly.interview.domain.UpdateEventsUseCase
 import com.freshly.interview.presentation.EventPresentation.Companion.toEventPresentation
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -25,6 +27,8 @@ class MainViewModel(
     private val _progressData = MutableLiveData<Boolean>()
     val progressData: LiveData<Boolean> get() = _progressData
 
+    private var showAllEventsFlow = MutableStateFlow(true)
+
     init {
         viewModelScope.launch {
             _progressData.value = true
@@ -32,9 +36,13 @@ class MainViewModel(
             when (val r = getEventsFlowLocallyUseCase.execute(Unit)) {
                 is Result.Success -> {
                     _progressData.value = false
-                    r.value?.collect { l ->
-                        _eventsData.value = l.map { it.toEventPresentation() }
-                    }
+                    r.value
+                        ?.combine(showAllEventsFlow) { list, showAll -> list to showAll }
+                        ?.collect { listToShowAll ->
+                            _eventsData.value = listToShowAll.first
+                                .map { it.toEventPresentation() }
+                                .filter { listToShowAll.second || it.favorite }
+                        }
                 }
                 is Result.Error -> {
                     _progressData.value = false
@@ -42,5 +50,9 @@ class MainViewModel(
                 }
             }
         }
+    }
+
+    fun showAllEvents(showAll: Boolean) {
+        showAllEventsFlow.value = showAll
     }
 }

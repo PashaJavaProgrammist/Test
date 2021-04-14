@@ -2,6 +2,7 @@ package com.freshly.interview.presentation
 
 import android.os.Bundle
 import android.widget.ProgressBar
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun initViews() {
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
+        findViewById<RadioGroup>(R.id.rb_mode).setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_all -> viewModel.showAllEvents(true)
+                R.id.rb_fav -> viewModel.showAllEvents(false)
+            }
+        }
     }
 
     private fun bindViewModel() {
