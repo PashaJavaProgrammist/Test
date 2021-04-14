@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.freshly.interview.common.Result
 import com.freshly.interview.domain.GetEventsFlowLocallyUseCase
+import com.freshly.interview.domain.UpdateEventFavoriteByIdLocallyUseCase
 import com.freshly.interview.domain.UpdateEventsUseCase
 import com.freshly.interview.presentation.EventPresentation.Companion.toEventPresentation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val updateEventsUseCase: UpdateEventsUseCase,
     private val getEventsFlowLocallyUseCase: GetEventsFlowLocallyUseCase,
+    private val updateEventFavoriteByIdLocallyUseCase: UpdateEventFavoriteByIdLocallyUseCase,
 ) : ViewModel() {
 
     private val _eventsData = MutableLiveData<List<EventPresentation>>()
@@ -62,8 +64,22 @@ class MainViewModel(
     }
 
     fun openUrl(url: String) {
-        if (PatternsCompat.WEB_URL.matcher(url).matches()) { // todo: extract validation in separate class
+        if (PatternsCompat.WEB_URL
+                .matcher(url)
+                .matches()
+        ) { // todo: extract validation in separate class
             _browserData.value = Uri.parse(url)
+        }
+    }
+
+    fun makeFavoriteOrNot(id: Long, fav: Boolean) {
+        viewModelScope.launch {
+            updateEventFavoriteByIdLocallyUseCase.execute(
+                UpdateEventFavoriteByIdLocallyUseCase.Input(
+                    id = id,
+                    fav = fav,
+                )
+            )
         }
     }
 }

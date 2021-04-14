@@ -11,6 +11,7 @@ import com.freshly.interview.data.rest.SeatGeekApiService
 import com.freshly.interview.domain.GetEventsFlowLocallyUseCase
 import com.freshly.interview.domain.RequestEventsRemoteUseCase
 import com.freshly.interview.domain.SaveEventsLocallyUseCase
+import com.freshly.interview.domain.UpdateEventFavoriteByIdLocallyUseCase
 import com.freshly.interview.domain.UpdateEventsUseCase
 import com.freshly.interview.presentation.MainViewModel
 import okhttp3.OkHttpClient
@@ -28,6 +29,7 @@ val appModules = module {
         MainViewModel(
             getEventsFlowLocallyUseCase = get(),
             updateEventsUseCase = get(),
+            updateEventFavoriteByIdLocallyUseCase = get()
         )
     }
 
@@ -40,6 +42,7 @@ val appModules = module {
     }
     factory { SaveEventsLocallyUseCase(dao = get()) }
     factory { GetEventsFlowLocallyUseCase(dao = get()) }
+    factory { UpdateEventFavoriteByIdLocallyUseCase(dao = get()) }
     factory {
         UpdateEventsUseCase(
             requestEventsRemoteUseCase = get(),

@@ -17,7 +17,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel: MainViewModel by viewModel()
 
     private val adapter: MainAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MainAdapter(onEventClick = viewModel::openUrl)
+        MainAdapter(
+            onEventClick = viewModel::openUrl,
+            onFavoriteClick = { id, fav -> viewModel.makeFavoriteOrNot(id, fav) },
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

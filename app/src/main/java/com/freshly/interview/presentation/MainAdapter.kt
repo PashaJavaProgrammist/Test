@@ -13,8 +13,8 @@ import com.freshly.interview.R
 class MainAdapter(
     private val list: MutableList<EventPresentation> = mutableListOf(),
     private val onEventClick: (url: String) -> Unit,
-) :
-    RecyclerView.Adapter<MainViewHolder>() {
+    private val onFavoriteClick: (id: Long, favorite: Boolean) -> Unit,
+) : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -28,7 +28,11 @@ class MainAdapter(
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
-        return MainViewHolder(view = view, onEventClick = onEventClick)
+        return MainViewHolder(
+            view = view,
+            onEventClick = onEventClick,
+            onFavoriteClick = onFavoriteClick,
+        )
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
@@ -53,18 +57,25 @@ class MainAdapter(
 class MainViewHolder(
     private val view: View,
     private val onEventClick: (url: String) -> Unit,
+    private val onFavoriteClick: (id: Long, favorite: Boolean) -> Unit,
 ) : RecyclerView.ViewHolder(view) {
 
     fun bind(eventPresentation: EventPresentation) {
         view.findViewById<TextView>(R.id.tv_title).text = eventPresentation.name
         view.findViewById<TextView>(R.id.tv_time).text = eventPresentation.time
         view.findViewById<TextView>(R.id.tv_date).text = eventPresentation.date
-        view.findViewById<CheckBox>(R.id.cb_fav).isChecked = eventPresentation.favorite
+        view.findViewById<CheckBox>(R.id.cb_fav).apply {
+            isChecked = eventPresentation.favorite
+            setOnCheckedChangeListener { _, isChecked ->
+                onFavoriteClick(eventPresentation.id, isChecked)
+            }
+        }
         view.setOnClickListener { onEventClick(eventPresentation.url) }
     }
 
     fun unbind() {
         view.setOnClickListener(null)
+        view.findViewById<CheckBox>(R.id.cb_fav).setOnCheckedChangeListener(null)
     }
 }
 

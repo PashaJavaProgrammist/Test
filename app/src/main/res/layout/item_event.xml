@@ -48,11 +48,11 @@
 
     <CheckBox
         android:id="@+id/cb_fav"
-        android:layout_width="@dimen/cb_fav_size"
-        android:layout_height="@dimen/cb_fav_size"
-        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:button="@drawable/ic_favorite"
         android:buttonTint="@color/black"
+        android:padding="@dimen/medium_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
