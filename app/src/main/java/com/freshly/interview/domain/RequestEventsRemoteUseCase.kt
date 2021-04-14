@@ -7,11 +7,11 @@ import com.freshly.interview.data.rest.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GetEventsUseCase(
+class RequestEventsRemoteUseCase(
     private val apiService: ApiService,
     private val timeUtcConverter: DateTimeUtcConverter,
     private val dateUtcConverter: DateTimeUtcConverter,
-) : UseCase<Unit, GetEventsUseCase.Output> {
+) : UseCase<Unit, RequestEventsRemoteUseCase.Output> {
 
     override suspend fun execute(input: Unit): Result<Output> {
         return when (val r = withContext(Dispatchers.IO) { apiService.events() }) {
@@ -25,6 +25,7 @@ class GetEventsUseCase(
                                 url = it.venue?.url ?: String.EMPTY,
                                 date = it.datetimeUtc?.let { it1 -> date(it1) } ?: String.EMPTY,
                                 time = it.datetimeUtc?.let { it1 -> time(it1) } ?: String.EMPTY,
+                                favorite = false
                             )
                         } ?: emptyList()
                     )

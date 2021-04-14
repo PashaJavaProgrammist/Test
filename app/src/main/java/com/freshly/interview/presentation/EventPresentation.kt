@@ -20,7 +20,7 @@ data class EventPresentation(
                 url = this.url,
                 time = this.time,
                 date = this.date,
-                favorite = false, // todo
+                favorite = this.favorite,
             )
         }
     }

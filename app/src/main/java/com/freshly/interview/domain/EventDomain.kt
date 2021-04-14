@@ -1,9 +1,26 @@
 package com.freshly.interview.domain
 
-data class EventDomain(
+import com.freshly.interview.data.db.EventDbo
+
+data class EventDomain constructor(
     val id: Long,
     val name: String,
     val url: String,
     val date: String,
     val time: String,
-)
+    val favorite: Boolean,
+) {
+
+    companion object {
+
+        fun EventDomain.toEventDbo(): EventDbo {
+            return EventDbo(
+                name = this.name,
+                url = this.url,
+                time = this.time,
+                date = this.date,
+                favorite = this.favorite,
+            )
+        }
+    }
+}
