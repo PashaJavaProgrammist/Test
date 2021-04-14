@@ -15,6 +15,7 @@ data class EventDomain constructor(
 
         fun EventDomain.toEventDbo(): EventDbo {
             return EventDbo(
+                id = this.id,
                 name = this.name,
                 url = this.url,
                 time = this.time,

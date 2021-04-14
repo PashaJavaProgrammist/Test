@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "events")
 data class EventDbo(
+    @PrimaryKey(autoGenerate = false)
+    var id: Long = 0,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "url")
@@ -17,7 +19,4 @@ data class EventDbo(
     @ColumnInfo(name = "favorite")
     val favorite: Boolean,
 ) {
-
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
 }
