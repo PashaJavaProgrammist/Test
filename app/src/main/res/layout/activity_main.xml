@@ -47,7 +47,7 @@
                 android:buttonTint="@color/black"
                 android:checked="true"
                 android:gravity="center"
-                android:text="Events"
+                android:text="@string/events"
                 />
 
             <RadioButton
@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:buttonTint="@color/black"
                 android:gravity="center"
-                android:text="Favorites"
+                android:text="@string/favorites"
                 />
 
         </RadioGroup>
@@ -78,4 +78,5 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

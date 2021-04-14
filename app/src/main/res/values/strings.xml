@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Interview</string>
+    <string name="events">Events</string>
+    <string name="favorites">Favorites</string>
 </resources>
