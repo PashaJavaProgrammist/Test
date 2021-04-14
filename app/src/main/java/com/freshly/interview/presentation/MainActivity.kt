@@ -1,5 +1,7 @@
 package com.freshly.interview.presentation
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ProgressBar
 import android.widget.RadioGroup
@@ -15,7 +17,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel: MainViewModel by viewModel()
 
     private val adapter: MainAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MainAdapter()
+        MainAdapter(onEventClick = viewModel::openUrl)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +50,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             it?.let {
                 // todo: use viewBinding instead of findViewById
                 findViewById<ProgressBar>(R.id.pb_progress).isVisible = it
+            }
+        }
+        viewModel.browserData.observe(this) { uri ->
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+            } catch (e: ActivityNotFoundException) {
+                // todo: handle error
             }
         }
     }

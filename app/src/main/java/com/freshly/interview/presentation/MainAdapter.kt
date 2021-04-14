@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.freshly.interview.R
 
-class MainAdapter(private val list: MutableList<EventPresentation> = mutableListOf()) :
+class MainAdapter(
+    private val list: MutableList<EventPresentation> = mutableListOf(),
+    private val onEventClick: (url: String) -> Unit,
+) :
     RecyclerView.Adapter<MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -25,7 +28,7 @@ class MainAdapter(private val list: MutableList<EventPresentation> = mutableList
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
-        return MainViewHolder(view = view)
+        return MainViewHolder(view = view, onEventClick = onEventClick)
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
@@ -47,16 +50,21 @@ class MainAdapter(private val list: MutableList<EventPresentation> = mutableList
     }
 }
 
-class MainViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+class MainViewHolder(
+    private val view: View,
+    private val onEventClick: (url: String) -> Unit,
+) : RecyclerView.ViewHolder(view) {
 
     fun bind(eventPresentation: EventPresentation) {
         view.findViewById<TextView>(R.id.tv_title).text = eventPresentation.name
         view.findViewById<TextView>(R.id.tv_time).text = eventPresentation.time
         view.findViewById<TextView>(R.id.tv_date).text = eventPresentation.date
         view.findViewById<CheckBox>(R.id.cb_fav).isChecked = eventPresentation.favorite
+        view.setOnClickListener { onEventClick(eventPresentation.url) }
     }
 
     fun unbind() {
+        view.setOnClickListener(null)
     }
 }
 

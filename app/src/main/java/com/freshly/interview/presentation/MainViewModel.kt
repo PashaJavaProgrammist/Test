@@ -1,5 +1,7 @@
 package com.freshly.interview.presentation
 
+import android.net.Uri
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,11 +23,14 @@ class MainViewModel(
     private val _eventsData = MutableLiveData<List<EventPresentation>>()
     val eventsData: LiveData<List<EventPresentation>> get() = _eventsData
 
-    private val _errorData = MutableLiveData<String>()
+    private val _errorData = MutableLiveData<String>() // todo: use SingleLiveEvent
     val errorData: LiveData<String> get() = _errorData
 
     private val _progressData = MutableLiveData<Boolean>()
     val progressData: LiveData<Boolean> get() = _progressData
+
+    private val _browserData = MutableLiveData<Uri>() // todo: use SingleLiveEvent
+    val browserData: LiveData<Uri> get() = _browserData
 
     private var showAllEventsFlow = MutableStateFlow(true)
 
@@ -54,5 +59,11 @@ class MainViewModel(
 
     fun showAllEvents(showAll: Boolean) {
         showAllEventsFlow.value = showAll
+    }
+
+    fun openUrl(url: String) {
+        if (PatternsCompat.WEB_URL.matcher(url).matches()) { // todo: extract validation in separate class
+            _browserData.value = Uri.parse(url)
+        }
     }
 }
