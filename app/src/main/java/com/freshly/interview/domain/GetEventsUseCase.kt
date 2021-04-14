@@ -20,6 +20,7 @@ class GetEventsUseCase(
                     value = Output(
                         events = r.value?.events?.map {
                             EventDomain(
+                                id = it.id ?: 0L,
                                 name = it.venue?.name ?: String.EMPTY,
                                 url = it.venue?.url ?: String.EMPTY,
                                 date = it.datetimeUtc?.let { it1 -> date(it1) } ?: String.EMPTY,

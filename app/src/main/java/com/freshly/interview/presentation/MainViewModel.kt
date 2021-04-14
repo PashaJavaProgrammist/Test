@@ -19,8 +19,12 @@ class MainViewModel(
     private val _errorData = MutableLiveData<String>()
     val errorData: LiveData<String> get() = _errorData
 
+    private val _progressData = MutableLiveData<Boolean>()
+    val progressData: LiveData<Boolean> get() = _progressData
+
     init {
         viewModelScope.launch {
+            _progressData.value = true
             when (val o = getEventsUseCase.execute(Unit)) {
                 is Result.Success -> {
                     _eventsData.value = o.value?.events?.map {
@@ -31,6 +35,7 @@ class MainViewModel(
                     _errorData.value = o.throwable?.message ?: "Oops..." // todo: in strings.xml
                 }
             }
+            _progressData.value = false
         }
     }
 }
