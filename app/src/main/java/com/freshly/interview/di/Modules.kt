@@ -23,6 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val BASE_URL = "https://api.seatgeek.com/2/"
+private const val DATABASE_NAME = "database"
 
 val appModules = module {
     viewModel {
@@ -73,7 +74,7 @@ val appModules = module {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
-            "database"
+            DATABASE_NAME
         ).build()
     }
 

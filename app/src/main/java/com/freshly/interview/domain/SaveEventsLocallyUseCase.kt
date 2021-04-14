@@ -6,6 +6,9 @@ import com.freshly.interview.domain.EventDomain.Companion.toEventDbo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Save events in local DB
+ */
 class SaveEventsLocallyUseCase(
     private val dao: EventDao,
 ) : UseCase<List<EventDomain>, Unit> {

@@ -7,6 +7,9 @@ import com.freshly.interview.data.rest.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Request events from remote storage
+ */
 class RequestEventsRemoteUseCase(
     private val apiService: ApiService,
     private val timeUtcConverter: DateTimeUtcConverter,

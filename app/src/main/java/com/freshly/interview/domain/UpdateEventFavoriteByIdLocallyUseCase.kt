@@ -5,6 +5,11 @@ import com.freshly.interview.data.db.EventDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Update event in local DB. Change [EventDomain.favorite] flag
+ *
+ * @see Input
+ */
 class UpdateEventFavoriteByIdLocallyUseCase(
     private val dao: EventDao,
 ) : UseCase<UpdateEventFavoriteByIdLocallyUseCase.Input, Unit> {

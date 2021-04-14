@@ -9,6 +9,12 @@ import kotlinx.coroutines.withContext
 
 private const val UPDATE_INTERVAL_MS = 3_600_000L
 
+/**
+ * Check if needs to request events from server (cache time interval = [UPDATE_INTERVAL_MS])
+ * and save it in local db
+ *
+ * @see Input
+ */
 class UpdateEventsUseCase(
     private val requestEventsRemoteUseCase: RequestEventsRemoteUseCase,
     private val saveEventsLocallyUseCase: SaveEventsLocallyUseCase,
@@ -40,6 +46,9 @@ class UpdateEventsUseCase(
         return@withContext Result.Success(Unit)
     }
 
+    /**
+     * @param forceUpdate - true - if need to get data from remote source
+     */
     data class Input(
         val forceUpdate: Boolean
     )

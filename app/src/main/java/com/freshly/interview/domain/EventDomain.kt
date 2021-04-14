@@ -2,6 +2,9 @@ package com.freshly.interview.domain
 
 import com.freshly.interview.data.db.EventDbo
 
+/**
+ * Event model for domain layer
+ */
 data class EventDomain constructor(
     val id: Long,
     val name: String,
@@ -13,6 +16,9 @@ data class EventDomain constructor(
 
     companion object {
 
+        /**
+         * Convert Event model for domain layer to Event model to data layer (for DB)
+         */
         fun EventDomain.toEventDbo(): EventDbo {
             return EventDbo(
                 id = this.id,
