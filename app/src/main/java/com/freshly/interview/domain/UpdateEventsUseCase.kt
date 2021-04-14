@@ -1,6 +1,7 @@
 package com.freshly.interview.domain
 
 import com.freshly.interview.common.Result
+import com.freshly.interview.data.db.EventDao
 import com.freshly.interview.data.db.UpdateTimeDao
 import com.freshly.interview.data.db.UpdateTimeDbo
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ class UpdateEventsUseCase(
     private val requestEventsRemoteUseCase: RequestEventsRemoteUseCase,
     private val saveEventsLocallyUseCase: SaveEventsLocallyUseCase,
     private val updateTimeDao: UpdateTimeDao,
+    private val eventDao: EventDao,
 ) : UseCase<UpdateEventsUseCase.Input, Unit> {
 
     override suspend fun execute(input: Input): Result<Unit> = withContext(Dispatchers.IO) {
@@ -20,7 +22,16 @@ class UpdateEventsUseCase(
         if (input.forceUpdate || System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL_MS) {
             when (val result = requestEventsRemoteUseCase.execute(Unit)) {
                 is Result.Success -> {
-                    result.value?.events?.let { saveEventsLocallyUseCase.execute(it) }
+                    val localEvents = eventDao.getEvents()
+                    result.value?.events?.let { remoteEvents ->
+                        saveEventsLocallyUseCase.execute(
+                            remoteEvents.map { re ->
+                                re.favorite = localEvents.find { it.id == re.id }
+                                    ?.favorite ?: false
+                                re
+                            }
+                        )
+                    }
                     updateTimeDao.updateTime(UpdateTimeDbo(time = System.currentTimeMillis()))
                 }
                 is Result.Error -> return@withContext Result.Error(result.throwable)

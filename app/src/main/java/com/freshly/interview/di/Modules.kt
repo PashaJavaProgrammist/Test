@@ -48,6 +48,7 @@ val appModules = module {
             requestEventsRemoteUseCase = get(),
             saveEventsLocallyUseCase = get(),
             updateTimeDao = get(),
+            eventDao = get(),
         )
     }
 

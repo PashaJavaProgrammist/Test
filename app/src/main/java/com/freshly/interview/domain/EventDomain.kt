@@ -8,7 +8,7 @@ data class EventDomain constructor(
     val url: String,
     val date: String,
     val time: String,
-    val favorite: Boolean,
+    var favorite: Boolean,
 ) {
 
     companion object {

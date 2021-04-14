@@ -13,7 +13,10 @@ interface EventDao {
     @Query("SELECT * from events ORDER BY id")
     fun getEventsFlow(): Flow<List<EventDbo>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query("SELECT * from events ORDER BY id")
+    fun getEvents(): List<EventDbo>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(events: List<EventDbo>)
 
     @Update
