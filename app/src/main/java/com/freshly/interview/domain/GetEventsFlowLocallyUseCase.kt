@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 /**
  * Observe changes of events in local db
  */
-class GetEventsFlowLocallyUseCase(
+open class GetEventsFlowLocallyUseCase(
     private val dao: EventDao,
 ) : UseCase<Unit, Flow<List<EventDomain>>> {
 

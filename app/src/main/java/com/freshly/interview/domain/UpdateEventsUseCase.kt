@@ -1,5 +1,6 @@
 package com.freshly.interview.domain
 
+import androidx.annotation.VisibleForTesting
 import com.freshly.interview.common.Result
 import com.freshly.interview.data.db.EventDao
 import com.freshly.interview.data.db.UpdateTimeDao
@@ -15,7 +16,7 @@ private const val UPDATE_INTERVAL_MS = 3_600_000L
  *
  * @see Input
  */
-class UpdateEventsUseCase(
+open class UpdateEventsUseCase(
     private val requestEventsRemoteUseCase: RequestEventsRemoteUseCase,
     private val saveEventsLocallyUseCase: SaveEventsLocallyUseCase,
     private val updateTimeDao: UpdateTimeDao,

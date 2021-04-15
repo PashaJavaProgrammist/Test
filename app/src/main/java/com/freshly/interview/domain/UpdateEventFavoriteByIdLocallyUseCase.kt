@@ -2,6 +2,7 @@ package com.freshly.interview.domain
 
 import com.freshly.interview.common.Result
 import com.freshly.interview.data.db.EventDao
+import com.freshly.interview.domain.UpdateEventFavoriteByIdLocallyUseCase.Input
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -10,7 +11,7 @@ import kotlinx.coroutines.withContext
  *
  * @see Input
  */
-class UpdateEventFavoriteByIdLocallyUseCase(
+open class UpdateEventFavoriteByIdLocallyUseCase(
     private val dao: EventDao,
 ) : UseCase<UpdateEventFavoriteByIdLocallyUseCase.Input, Unit> {
 
