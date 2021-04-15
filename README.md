@@ -1,4 +1,4 @@
 Test
 ====
 
-![UI](video/sample.webm)
+![UI](video/ui.gif)
