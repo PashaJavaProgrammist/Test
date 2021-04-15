@@ -1,5 +1,7 @@
 package com.freshly.interview.data.rest
 
+import com.freshly.interview.common.EMPTY
+import com.freshly.interview.domain.EventDomain
 import com.google.gson.annotations.SerializedName
 
 data class Events(
@@ -14,7 +16,25 @@ data class Event(
     var datetimeUtc: String? = null,
     @SerializedName("venue")
     var venue: Venue? = null
-)
+) {
+
+    companion object {
+
+        fun Event.toEventDomain(
+            dateConvert: (String) -> String,
+            timeConvert: (String) -> String,
+        ): EventDomain {
+            return EventDomain(
+                id = this.id ?: 0L,
+                name = this.venue?.name ?: String.EMPTY,
+                url = this.venue?.url ?: String.EMPTY,
+                date = this.datetimeUtc?.let(dateConvert) ?: String.EMPTY,
+                time = this.datetimeUtc?.let(timeConvert) ?: String.EMPTY,
+                favorite = false,
+            )
+        }
+    }
+}
 
 data class Venue(
     @SerializedName("name")
