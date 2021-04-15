@@ -13,7 +13,6 @@ import org.mockito.ArgumentMatchers.anyString
 import retrofit2.Call
 
 @RunWith(AndroidJUnit4::class)
-
 class SeatGeekApiTest {
 
     lateinit var seatGeekApiService: SeatGeekApiService

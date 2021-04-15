@@ -2,7 +2,10 @@ package com.freshly.interview.common.time
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 
+@RunWith(JUnit4::class)
 class TimeConverterTest {
 
     private val timeConverter = TimeConverter()
