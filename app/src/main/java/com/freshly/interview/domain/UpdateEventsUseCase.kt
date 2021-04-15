@@ -23,7 +23,7 @@ class UpdateEventsUseCase(
 ) : UseCase<UpdateEventsUseCase.Input, Unit> {
 
     override suspend fun execute(input: Input): Result<Unit> = withContext(Dispatchers.IO) {
-        val timeDbo = updateTimeDao.getById()
+        val timeDbo = updateTimeDao.getUpdateTimeById()
         val lastUpdateTime = timeDbo?.time ?: 0
         if (input.forceUpdate || System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL_MS) {
             when (val result = requestEventsRemoteUseCase.execute(Unit)) {
@@ -38,7 +38,7 @@ class UpdateEventsUseCase(
                             }
                         )
                     }
-                    updateTimeDao.updateTime(UpdateTimeDbo(time = System.currentTimeMillis()))
+                    updateTimeDao.insertTimeOrUpdateIfExist(UpdateTimeDbo(time = System.currentTimeMillis()))
                 }
                 is Result.Error -> return@withContext Result.Error(result.throwable)
             }

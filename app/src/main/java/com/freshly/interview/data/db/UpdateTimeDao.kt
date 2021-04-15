@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 interface UpdateTimeDao {
 
     @Query("SELECT * from update_time WHERE id = :id")
-    fun getById(id: Long = UpdateTimeDbo.UPDATE_ID): UpdateTimeDbo?
+    fun getUpdateTimeById(id: Long = UpdateTimeDbo.UPDATE_ID): UpdateTimeDbo?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun updateTime(event: UpdateTimeDbo)
+    fun insertTimeOrUpdateIfExist(event: UpdateTimeDbo)
 }
